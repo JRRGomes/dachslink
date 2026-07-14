@@ -1,0 +1,7 @@
+rails_guide:
+  original_url: https://guides.rubyonrails.org/getting_started.html
+  slug: guide1
+
+example:
+  original_url: https://example.com
+  slug: exmpl2

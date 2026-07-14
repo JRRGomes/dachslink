@@ -1,0 +1,45 @@
+<div style="max-width: 480px; margin: 40px auto; text-align: center; font-family: sans-serif;">
+
+  <pre style="display: inline-block; text-align: left; line-height: 1.1;" aria-hidden="true">
+                               __
+      ,                      ," e`-----o
+      ((                     (  | ____,'
+      \~-------------------' \_;/
+      (                         /
+      /) .__________________.  )
+      (( (                  (( (
+      ``-'                  ``-'
+  </pre>
+
+  <h1>Shorten a URL</h1>
+
+  <% if flash[:short_url] %>
+    <div data-controller="clipboard" style="margin-bottom: 20px;">
+      <p>Your short link is ready:</p>
+      <input type="text"
+            value="<%= flash[:short_url] %>"
+            readonly
+            data-clipboard-target="source">
+      <button type="button" data-action="clipboard#copy">Copy</button>
+    </div>
+  <% end %>
+
+  <%= form_with model: @link, url: links_path do |form| %>
+    <% if @link.errors.any? %>
+      <div style="color: red">
+        <ul>
+          <% @link.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :original_url, "URL to shorten" %>
+      <%= form.url_field :original_url, placeholder: "https://example.com" %>
+      <%= form.submit "Shorten" %>
+    </div>
+  <% end %>
+
+</div>
