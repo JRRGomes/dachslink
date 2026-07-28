@@ -27,6 +27,29 @@ ENV RAILS_ENV="production" \
     BUNDLE_WITHOUT="development" \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 
+FROM base AS dev
+
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+ENV RAILS_ENV="development" \
+    BUNDLE_DEPLOYMENT="" \
+    BUNDLE_WITHOUT="" \
+    BINDING="0.0.0.0" \
+    PORT="4000"
+
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails /rails "${BUNDLE_PATH}"
+
+USER 1000:1000
+
+COPY --chown=rails:rails Gemfile Gemfile.lock ./
+RUN bundle install
+
+CMD ["./bin/dev"]
+
 # Throw-away build stage to reduce size of final image
 FROM base AS build
 

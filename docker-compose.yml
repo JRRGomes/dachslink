@@ -1,0 +1,32 @@
+# Development setup. The production image is built from the same Dockerfile's
+# final stage and is deployed by Kamal, not by this file.
+#
+#   docker compose up          start the app on http://localhost:4000
+#   docker compose logs -f web follow the logs
+#   docker compose exec web bash   open a shell inside the container
+#
+name: dachslink
+
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    image: dachslink:dev
+    command: bash -c "rm -f tmp/pids/server.pid && ./bin/rails db:prepare && ./bin/dev"
+    user: "1000:1000"
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/rails:cached
+      - bundle:/usr/local/bundle
+    environment:
+      RAILS_ENV: development
+      BINDING: 0.0.0.0
+      PORT: 4000
+      HISTFILE: /rails/log/.bash_history
+    stdin_open: true
+    tty: true
+
+volumes:
+  bundle:
