@@ -7,7 +7,7 @@ image: dachslink
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 54.233.51.46
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -26,15 +26,12 @@ servers:
 
 # Where you keep your container images.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
-
-  # Needed for authenticated registries.
-  # username: your-user
-
-  # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
+  server: 641135591945.dkr.ecr.sa-east-1.amazonaws.com
+  # ECR expects the literal user "AWS"; the real credential is the short-lived
+  # token generated in .kamal/secrets.
+  username: AWS
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
@@ -78,7 +75,9 @@ asset_path: /rails/public/assets
 
 # Configure the image builder.
 builder:
-  arch: amd64
+  # The server is a Graviton (t4g) instance, so this matches the Mac's own
+  # architecture and the image builds natively instead of under QEMU emulation.
+  arch: arm64
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
@@ -90,9 +89,16 @@ builder:
   #   - GITHUB_TOKEN
   #   - RAILS_MASTER_KEY
 
-# Use a different ssh user than root
-# ssh:
-#   user: app
+# Ubuntu AMIs disable direct root login; `ubuntu` is the default user and has
+# passwordless sudo, which is what Kamal needs to install Docker.
+ssh:
+  user: ubuntu
+  # Point net-ssh at the EC2 key pair. Without this it only tries the agent and
+  # the default ~/.ssh/id_* names, and keys_only stops it from burning auth
+  # attempts on unrelated agent keys before reaching this one.
+  keys:
+    - ~/.ssh/dachslink.pem
+  keys_only: true
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
