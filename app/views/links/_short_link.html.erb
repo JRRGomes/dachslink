@@ -1,0 +1,16 @@
+<% if link %>
+  <% host, path = short_link_parts(link) %>
+
+  <span class="short-view__url"
+        data-dachs-target="shortUrl"
+        data-full-url="<%= short_url(link.slug) %>"><span class="host"><%= host %></span><span class="slug"><%= path %></span></span>
+
+  <button type="button" class="copy-btn" title="copiar" aria-label="copiar link curto"
+          data-action="dachs#copy">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="12" height="12" rx="2.5"/>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+    </svg>
+  </button>
+<% end %>

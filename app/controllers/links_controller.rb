@@ -5,11 +5,10 @@ class LinksController < ApplicationController
 
   def create
     @link = Link.new(link_params)
+    saved = @link.save
 
-    if @link.save
-      redirect_to root_path, flash: { short_url: short_url(@link.slug) }
-    else
-      render :index, status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream { render :create, status: saved ? :ok : :unprocessable_entity }
     end
   end
 

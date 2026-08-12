@@ -1,8 +1,11 @@
 class Link < ApplicationRecord
   before_validation :generate_slug, on: :create
 
-  validates :original_url, presence: true,
-    format: { with: %r{\Ahttps?://}i, message: "must start with http:// or https://" }
+  validates :original_url,
+    presence: { message: "cole uma URL antes de encurtar" },
+    format: { with: %r{\Ahttps?://}i,
+              message: "a URL precisa começar com http:// ou https://",
+              allow_blank: true }
   validates :slug, presence: true, uniqueness: true
 
   private

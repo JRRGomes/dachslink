@@ -1,45 +1,51 @@
-<div style="max-width: 480px; margin: 40px auto; text-align: center; font-family: sans-serif;">
+<% content_for :title, "dachs.link — encurtador de URL" %>
 
-  <pre style="display: inline-block; text-align: left; line-height: 1.1;" aria-hidden="true">
-                               __
-      ,                      ," e`-----o
-      ((                     (  | ____,'
-      \~-------------------' \_;/
-      (                         /
-      /) .__________________.  )
-      (( (                  (( (
-      ``-'                  ``-'
-  </pre>
+<div class="shortener" data-controller="dachs">
+  <h1>dachs<span class="dot">.link</span></h1>
+  <p class="tagline">cole a URL na barriga do salsichinha 🌭</p>
 
-  <h1>Shorten a URL</h1>
+  <div class="stage">
+    <div class="fit">
+      <div class="shadow"></div>
 
-  <% if flash[:short_url] %>
-    <div data-controller="clipboard" style="margin-bottom: 20px;">
-      <p>Your short link is ready:</p>
-      <input type="text"
-            value="<%= flash[:short_url] %>"
-            readonly
-            data-clipboard-target="source">
-      <button type="button" data-action="clipboard#copy">Copy</button>
-    </div>
-  <% end %>
+      <div class="dachs" data-dachs-target="dog">
+        <div class="heart" data-dachs-target="heart" aria-hidden="true">💛</div>
 
-  <%= form_with model: @link, url: links_path do |form| %>
-    <% if @link.errors.any? %>
-      <div style="color: red">
-        <ul>
-          <% @link.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+        <%= render "head" %>
+
+        <div class="dachs__body" data-action="click->dachs#copy">
+          <div class="body-slot">
+            <%= form_with model: @link, url: links_path, id: "link_form", class: "url-form",
+                          data: { action: "turbo:submit-start->dachs#squeeze turbo:submit-end->dachs#settle" } do |form| %>
+              <%= form.text_field :original_url,
+                    class: "url-input",
+                    placeholder: "https://exemplo.com/uma-url-bem-comprida-mesmo",
+                    spellcheck: false, autocomplete: "off", autocapitalize: "off",
+                    inputmode: "url",
+                    "aria-label": "URL para encurtar",
+                    data: { dachs_target: "input",
+                            action: "focus->dachs#alert blur->dachs#relax input->dachs#typing" } %>
+            <% end %>
+
+            <div id="short_result" class="short-view">
+              <%= render "short_link", link: nil %>
+            </div>
+          </div>
+        </div>
+
+        <%= render "rear" %>
       </div>
-    <% end %>
-
-    <div>
-      <%= form.label :original_url, "URL to shorten" %>
-      <%= form.url_field :original_url, placeholder: "https://example.com" %>
-      <%= form.submit "Shorten" %>
     </div>
-  <% end %>
+  </div>
 
+  <div class="controls">
+    <button type="submit" form="link_form" class="shorten-btn" data-dachs-target="submit">
+      Encurtar! 🌭
+    </button>
+
+    <p class="hint" id="form_hint" data-dachs-target="hint" role="status"></p>
+
+    <button type="button" class="reset-btn" data-dachs-target="reset"
+            data-action="dachs#reset" hidden>encurtar outra</button>
+  </div>
 </div>

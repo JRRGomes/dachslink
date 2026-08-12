@@ -1,0 +1,49 @@
+<svg class="dachs__rear" viewBox="0 0 170 220" aria-hidden="true">
+  <defs>
+    <linearGradient id="shade-rear" gradientUnits="userSpaceOnUse" x1="0" y1="62" x2="0" y2="152">
+      <stop offset="0"    stop-color="#fff" stop-opacity="0.20"/>
+      <stop offset="0.34" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.50" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1"    stop-color="#000" stop-opacity="0.16"/>
+    </linearGradient>
+    <radialGradient id="thigh" cx="40%" cy="32%" r="72%">
+      <stop offset="0"    stop-color="#fff" stop-opacity="0.10"/>
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1"    stop-color="#000" stop-opacity="0.10"/>
+    </radialGradient>
+  </defs>
+
+  <path class="tail"
+        d="M 74 92
+           C 104 76, 132 50, 148 24
+           C 152 17, 162 21, 159 30
+           C 146 60, 118 90, 88 106 Z"
+        fill="var(--sausage-dark)"/>
+
+  <g class="leg leg--back">
+    <rect x="24" y="142" width="25" height="56" rx="12.5" fill="var(--sausage-dark)"/>
+    <ellipse cx="36.5" cy="197" rx="16" ry="9.5" fill="var(--sausage-dark)"/>
+  </g>
+
+  <g fill="var(--sausage)">
+    <path id="rear-shape"
+          d="M 0 62
+             C 26 62, 52 64, 74 76
+             C 98 89, 113 110, 112 132
+             C 111 152, 92 164, 66 164
+             C 58 164, 52 152, 48 152
+             L 0 152 Z"/>
+  </g>
+
+  <g class="leg leg--back">
+    <rect x="66" y="146" width="27" height="52" rx="13.5" fill="var(--sausage)"/>
+    <ellipse cx="79.5" cy="197" rx="17" ry="10" fill="var(--sausage)"/>
+    <path d="M 72 199 v -5 M 79.5 200 v -6 M 87 199 v -5"
+          stroke="rgba(0,0,0,0.16)" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <ellipse cx="70" cy="128" rx="34" ry="32" fill="var(--sausage)"/>
+  <ellipse cx="70" cy="128" rx="34" ry="32" fill="url(#thigh)"/>
+
+  <use href="#rear-shape" fill="url(#shade-rear)"/>
+</svg>

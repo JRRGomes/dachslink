@@ -1,0 +1,12 @@
+<% if @link.persisted? %>
+  <%= turbo_stream.update "short_result" do %>
+    <%= render "short_link", link: @link %>
+  <% end %>
+
+  <%= turbo_stream.update "form_hint", "" %>
+<% else %>
+  <%= turbo_stream.update "form_hint",
+        @link.errors.map(&:message).to_sentence(words_connector: ", ",
+                                                two_words_connector: " e ",
+                                                last_word_connector: " e ") %>
+<% end %>
